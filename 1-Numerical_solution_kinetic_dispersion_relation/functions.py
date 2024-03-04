@@ -37,5 +37,5 @@ def find_w_roots_plasmapy(k0,ti_over_te,Wr_range = [0.4,1.7], Wi_range = [-0.3,0
 
     
     D_arr = np.abs(D_arr)
-    zeros = np.where(D_arr<1.5*D_arr.min())
+    zeros = np.where(D_arr<1.3*D_arr.min())
     return Wr[zeros[1]][:], Wi[zeros[0]][:]
