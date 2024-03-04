@@ -48,7 +48,7 @@ tmax = 100.0e0,
 }
 
 !----------field solver set up-----------------
-el_mag_fld
+el_mag_fld ! Driving electric field
 {
     ext_fld = "dynamic",
     type_ext_e(1) = "math func",
