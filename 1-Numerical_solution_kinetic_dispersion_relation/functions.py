@@ -1,8 +1,8 @@
 import numpy as np
 from plasmapy.dispersion import plasma_dispersion_func_deriv as zprime
 
-def ion_dispersion(w,k,ti_over_te,mi_over_me = 1836.):
-    return 1 - 1/(2*k**2)*zprime(1/np.sqrt(2)*(w/k))-1/(2*k**2)*1/ti_over_te*zprime(1/np.sqrt(2)*w/k*np.sqrt(mi_over_me/ti_over_te))
+def ion_dispersion(wr,wi,k,ti_over_te,mi_over_me = 1836.):
+    return 1 - 1/(2*k**2)*zprime(1/np.sqrt(2)*((wr+1j*wi)/k))-1/(2*k**2)*1/ti_over_te*zprime(1/np.sqrt(2)*(wr+1j*wi)/k*np.sqrt(mi_over_me/ti_over_te))
 
 def dfMdv(v):
     return 1./np.sqrt(2*np.pi) * (-v) * np.exp(-0.5*v**2)
@@ -25,21 +25,17 @@ def D_analytic(wr, wi, k0, v0, nb):
         d -= 2j*np.pi/k0**2 * dfBOTdv((wr+1j*wi)/k0, v0, nb)
     return d
 
-def find_w_roots(k0, v0, nb, method = D_analytic):
-    Wr = np.linspace(0,1.7,128)
-    Wi = np.linspace(-0.3,0.3,101)
+
+def find_w_roots_plasmapy(k0,ti_over_te,Wr_range = [0.4,1.7], Wi_range = [-0.3,0.3]):
+    Wr = np.linspace(Wr_range[0],Wr_range[1],128)
+    Wi = np.linspace(Wi_range[0],Wi_range[1],101)
 
     D_arr = np.zeros((len(Wi), len(Wr)), dtype = complex)
-    if (method == D_analytic):
-        for i in range(len(Wi)):
-            for j in range(len(Wr)):
-                D_arr[i,j] = method(Wr[j], Wi[i], k0=k0, v0 = v0, nb = nb)
-    elif (method == z_func):
-        for i in range(len(Wi)):
-            for j in range(len(Wr)):
-                D_arr[i,j] = method(Wr[j], Wi[i], k0=k0)
+    for i in range(len(Wi)):
+        for j in range(len(Wr)):
+            D_arr[i,j] = ion_dispersion(Wr[j], Wi[i], k=k0,ti_over_te=ti_over_te)
 
     
     D_arr = np.abs(D_arr)
-    zeros = np.where(D_arr<2*D_arr.min())
+    zeros = np.where(D_arr<1.5*D_arr.min())
     return Wr[zeros[1]][:], Wi[zeros[0]][:]
