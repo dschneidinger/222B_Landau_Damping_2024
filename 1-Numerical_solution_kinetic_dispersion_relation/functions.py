@@ -29,7 +29,6 @@ def D_analytic(wr, wi, k0, v0, nb):
 def find_w_roots_plasmapy(k0,ti_over_te,Wr_range = [0.4,1.7], Wi_range = [-0.3,0.3]):
     Wr = np.linspace(Wr_range[0],Wr_range[1],128)
     Wi = np.linspace(Wi_range[0],Wi_range[1],101)
-
     D_arr = np.zeros((len(Wi), len(Wr)), dtype = complex)
     for i in range(len(Wi)):
         for j in range(len(Wr)):
@@ -37,5 +36,5 @@ def find_w_roots_plasmapy(k0,ti_over_te,Wr_range = [0.4,1.7], Wi_range = [-0.3,0
 
     
     D_arr = np.abs(D_arr)
-    zeros = np.where(D_arr<1.3*D_arr.min())
+    zeros = np.where(D_arr == D_arr.min())
     return Wr[zeros[1]][:], Wi[zeros[0]][:]
