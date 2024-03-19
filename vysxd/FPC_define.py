@@ -31,3 +31,10 @@ def FPC(directory):
         A_result[:,:,i] = A
         B_result[:,:,i] = B
     return A_result, B_result
+
+def FPC_time_ave(A,B,t_start,t_interval,dt):
+    t_start = np.int_(t_start/dt)
+    t_interval = np.int_(t_interval/dt)
+    A_int_wrt_x = np.trapz(A[:,:,t_start:t_start+t_interval], axis = 2)
+    B_int_wrt_x = np.trapz(B[:,:,t_start:t_start+t_interval], axis = 2)
+    return A_int_wrt_x, B_int_wrt_x
