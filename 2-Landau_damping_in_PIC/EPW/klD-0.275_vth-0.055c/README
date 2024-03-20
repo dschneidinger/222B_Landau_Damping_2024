@@ -1,0 +1,13 @@
+Hehehe this is the first time I've ever made a readme file. Refer to this when you want to make adjustments to the input file.
+
+The important thing to understand is that this input file implements a driving E field at the boundary. You can configure the behavior of this field with the line ext_e_mfunc(1).
+
+The default value for this is:
+    ext_e_mfunc(1) = "if(t < 6, (sin(3.141592 * t/6))^2, 0.0) * 0.002*sin(6*x1-1.1959871*t)",
+
+I will now do my best to try and explain this statement. sin(6*x1-1.1959871*t) looks like a wave of the form sin(k x-omega t), so k = 6 and
+omega = 1.195. v_phase = .33
+
+Refer to attached mp4 if you want to try to understand it graphically...
+
+
