@@ -9,6 +9,7 @@ def FPC(directory):
     p1x1 = vysxd_get_data('EPW-alves/MS/PHA/p1x1/electrons/p1x1-electrons-000000.h5')
     A_result = np.empty((len(p1x1.Y),len(p1x1.X)-2,len(p1x1_files)-1))
     B_result = np.empty((len(p1x1.Y),len(p1x1.X)-2,len(p1x1_files)-1))
+    C_result = np.empty((len(p1x1.Y),len(p1x1.X)-2,len(p1x1_files)-1))
     for i in range(len(p1x1_files)-1):
         p1x1 = vysxd_get_data('EPW-alves/MS/PHA/p1x1/electrons/' + p1x1_files[i])
 
@@ -27,7 +28,10 @@ def FPC(directory):
 
         A = 1/2*np.multiply(vcubed_arr,dfdr)
         B = -1/2*np.multiply(vsquared_arr, e_times_dfdv)
+        C = 1/2*np.multiply(vsquared_arr,p1x1.DATA[:,1:-1])
 
         A_result[:,:,i] = A
         B_result[:,:,i] = B
-    return A_result, B_result
+        C_result[:,:,i] = C
+    C_result = np.gradient(C_result,axis=2)
+    return A_result, B_result, C_result
