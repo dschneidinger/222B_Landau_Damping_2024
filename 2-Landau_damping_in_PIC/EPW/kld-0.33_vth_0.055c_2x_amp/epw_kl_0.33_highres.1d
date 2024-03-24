@@ -44,7 +44,7 @@ if_move(1:1) = .false.,
 time
 {
 tmin = 0.0e0,
-tmax = 100.0e0,
+tmax = 70.0e0,
 }
 
 !----------field solver set up-----------------
